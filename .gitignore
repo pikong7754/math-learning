@@ -1,0 +1,15 @@
+.DS_Store
+*.log
+__pycache__/
+*.pyc
+.venv/
+venv/
+.idea/
+
+# Installed skills can be reinstalled from ClawHub.
+skills/
+
+# Optional large or sensitive raw inputs
+uploads/raw/
+ocr-output/raw/
+textbooks/*.pdf

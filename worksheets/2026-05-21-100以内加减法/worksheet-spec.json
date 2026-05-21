@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "title": "100以内加减法专项练习",
+  "meta": {
+    "date": "2026-05-21",
+    "grade": "一年级",
+    "semester": "下学期",
+    "topic": "100以内加减法",
+    "target_weak_point": "计算熟练度",
+    "strategy": "fluency_speed",
+    "student_name": "Alice (康晨熹)"
+  },
+  "sections": [
+    {
+      "title": "一、口算题（看谁算得又对又快）",
+      "layout": "grid-4",
+      "items": [
+        {
+          "type": "equation",
+          "expr": "25 + 13 =",
+          "answer": 38,
+          "answer_detail": "25 + 10 = 35, 35 + 3 = 38"
+        },
+        {
+          "type": "equation",
+          "expr": "47 - 15 =",
+          "answer": 32,
+          "answer_detail": "47 - 10 = 37, 37 - 5 = 32"
+        },
+        {
+          "type": "equation",
+          "expr": "36 + 24 =",
+          "answer": 60,
+          "answer_detail": "36 + 20 = 56, 56 + 4 = 60"
+        },
+        {
+          "type": "equation",
+          "expr": "58 - 27 =",
+          "answer": 31,
+          "answer_detail": "58 - 20 = 38, 38 - 7 = 31"
+        },
+        {
+          "type": "equation",
+          "expr": "19 + 32 =",
+          "answer": 51,
+          "answer_detail": "19 + 30 = 49, 49 + 2 = 51"
+        },
+        {
+          "type": "equation",
+          "expr": "73 - 41 =",
+          "answer": 32,
+          "answer_detail": "73 - 40 = 33, 33 - 1 = 32"
+        },
+        {
+          "type": "equation",
+          "expr": "28 + 35 =",
+          "answer": 63,
+          "answer_detail": "28 + 30 = 58, 58 + 5 = 63"
+        },
+        {
+          "type": "equation",
+          "expr": "90 - 45 =",
+          "answer": 45,
+          "answer_detail": "90 - 40 = 50, 50 - 5 = 45"
+        }
+      ]
+    },
+    {
+      "title": "二、应用题（认真读题，写出计算过程）",
+      "layout": "problem-grid-2",
+      "items": [
+        {
+          "type": "word_problem",
+          "prompt": "小明有28颗糖果，妈妈又给了他15颗。小明现在一共有多少颗糖果？",
+          "answer_prompt": "答：",
+          "answer": 43,
+          "answer_detail": "28 + 15 = 43（颗）",
+          "units": "颗"
+        },
+        {
+          "type": "word_problem",
+          "prompt": "图书馆有72本故事书，借出去了38本。还剩下多少本故事书？",
+          "answer_prompt": "答：",
+          "answer": 34,
+          "answer_detail": "72 - 38 = 34（本）",
+          "units": "本"
+        }
+      ]
+    }
+  ]
+}
