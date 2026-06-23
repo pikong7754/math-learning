@@ -19,7 +19,8 @@
 
 ## 📄 文件列表
 
-- [targeted-practice.html](targeted-practice.html) - 练习卷（可打印）
+- [📝 在线练习版](index.html) - 适合在电脑/平板上做题
+- [🖨️ A4 打印版](print.html) - 专为打印设计，点击"一键打印"按钮即可
 
 ## 💡 使用建议
 
