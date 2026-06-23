@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>康晨熹专属错题巩固练习 - A4 打印版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'KaiTi', '楷体', Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            font-size: 13px;
+        }
+        
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        
+        .print-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .print-button::before {
+            content: "🖨️ ";
+        }
+        
+        .page {
+            background: white;
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto 20px;
+            padding: 15mm;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .header h1 {
+            color: #2c5aa0;
+            font-size: 20px;
+            margin: 8px 0;
+        }
+        
+        .info {
+            display: flex;
+            justify-content: space-between;
+            background: #f0f7ff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 12px;
+        }
+        
+        .encouragement {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 12px;
+        }
+        
+        .score-box {
+            position: absolute;
+            top: 15mm;
+            right: 15mm;
+            border: 2px solid #2c5aa0;
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .score-label {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .score-value {
+            font-size: 18px;
+            color: #2c5aa0;
+            font-weight: bold;
+        }
+        
+        /* 计算题并排布局 */
+        .calc-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+        
+        .calc-item {
+            flex: 1;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 10px;
+            page-break-inside: avoid;
+        }
+        
+        .calc-item:hover {
+            border-color: #2c5aa0;
+        }
+        
+        .q-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .q-number {
+            display: inline-block;
+            background: #2c5aa0;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 22px;
+            margin-right: 8px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .q-knowledge {
+            display: inline-block;
+            background: #fff3cd;
+            color: #856404;
+            padding: 1px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            margin-left: 6px;
+        }
+        
+        .q-title {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .math-display {
+            text-align: center;
+            font-size: 16px;
+            margin: 8px 0;
+            padding: 6px;
+            background: #fafafa;
+            border-radius: 4px;
+        }
+        
+        .answer-area {
+            border: 1.5px dashed #ccc;
+            border-radius: 4px;
+            padding: 8px;
+            margin-top: 8px;
+            min-height: 45px;
+            background: #fafafa;
+        }
+        
+        .answer-label {
+            color: #666;
+            font-size: 11px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .blank-line {
+            border-bottom: 1px dotted #999;
+            height: 18px;
+            margin: 5px 0;
+        }
+        
+        .tip {
+            background: #e7f3ff;
+            border-left: 2px solid #2c5aa0;
+            padding: 5px 8px;
+            margin-top: 8px;
+            font-size: 11px;
+            color: #1a5490;
+            font-style: italic;
+        }
+        
+        .tip::before {
+            content: "💡 ";
+        }
+        
+        /* 普通题目样式 */
+        .question {
+            border: 1.5px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 10px;
+            page-break-inside: avoid;
+        }
+        
+        .question:hover {
+            border-color: #2c5aa0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0;
+            font-size: 12px;
+        }
+        
+        table td {
+            border: 1.5px solid #2c5aa0;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        .grid-box {
+            border: 1.5px solid #333;
+            width: 100%;
+            height: 100px;
+            margin: 8px 0;
+            background-image: 
+                linear-gradient(#e0e0e0 1px, transparent 1px),
+                linear-gradient(90deg, #e0e0e0 1px, transparent 1px);
+            background-size: 12px 12px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1.5px solid #e0e0e0;
+            color: #666;
+            font-size: 12px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .print-button {
+                display: none;
+            }
+            
+            .page {
+                box-shadow: none;
+                margin: 0;
+                padding: 12mm;
+                width: 210mm;
+                min-height: 297mm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="print-button" onclick="window.print()">一键打印</button>
+    
+    <!-- 第 1 页：计算 + 应用题 -->
+    <div class="page">
+        <div class="score-box">
+            <div class="score-label">得分</div>
+            <div class="score-value">____ / 100</div>
+        </div>
+        
+        <div class="header">
+            <h1>🎯 错题巩固练习卷</h1>
+        </div>
+        
+        <div class="info">
+            <span><strong>学生：</strong>康晨熹</span>
+            <span><strong>日期：</strong>2026 年 6 月 23 日</span>
+            <span><strong>限时：</strong>60 分钟</span>
+        </div>
+        
+        <div class="encouragement">
+            💪 加油！认真做完，你会发现自己进步了很多！
+        </div>
+        
+        <!-- 计算题并排 -->
+        <div class="calc-row">
+            <div class="calc-item">
+                <div class="q-header">
+                    <span class="q-number">1</span>
+                    <span class="q-knowledge">📐 乘法分配律</span>
+                </div>
+                <div class="q-title">用简便方法计算：</div>
+                <div class="math-display">$$56 × 34 + 56 + 56 × 65 = $$</div>
+                <div class="answer-area">
+                    <div class="answer-label">过程：</div>
+                    <div class="blank-line"></div>
+                    <div class="blank-line"></div>
+                </div>
+                <div class="tip">提示：把 56 看成 56×1，提取公因数</div>
+            </div>
+            
+            <div class="calc-item">
+                <div class="q-header">
+                    <span class="q-number">2</span>
+                    <span class="q-knowledge">📐 乘法分配律</span>
+                </div>
+                <div class="q-title">用简便方法计算：</div>
+                <div class="math-display">$$125 × 73 - 125 × 5 - 125 × 8 = $$</div>
+                <div class="answer-area">
+                    <div class="answer-label">过程：</div>
+                    <div class="blank-line"></div>
+                    <div class="blank-line"></div>
+                </div>
+                <div class="tip">提示：提取 125，73-5-8=？</div>
+            </div>
+        </div>
+        
+        <!-- 第 3 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">3</span>
+                <span class="q-knowledge">🧮 最值问题</span>
+            </div>
+            <div class="q-title">用 1、3、5、7、9 组成一个三位数和一个两位数（每个数字只能用一次）。</div>
+            <div style="margin: 6px 0; font-size: 12px;">
+                <p>（1）积最小：________________________</p>
+                <p style="margin-top: 5px;">（2）积最大：________________________</p>
+            </div>
+            <div class="answer-area" style="min-height: 35px;">
+                <div class="answer-label">思考：</div>
+                <div class="blank-line"></div>
+            </div>
+            <div class="tip">提示：积最小→小数放高位；积最大→大数放高位</div>
+        </div>
+        
+        <!-- 第 4 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">4</span>
+                <span class="q-knowledge">💰 最优方案</span>
+            </div>
+            <div class="q-title">15 名老师和 32 名学生去科技馆。怎样购票最划算？最少需要多少元？</div>
+            <table>
+                <tr>
+                    <td style="background: #f0f7ff;"><strong>方案一</strong><br>成人 50 元/人，学生 25 元/人</td>
+                    <td><strong>方案二</strong><br>团体 30 元/人（40 人及以上）</td>
+                </tr>
+            </table>
+            <div class="answer-area">
+                <div class="answer-label">过程：</div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+            </div>
+            <div class="tip">提示：学生单买便宜，成人团体便宜，凑够 40 人买团体票</div>
+        </div>
+        
+        <!-- 第 5 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">5</span>
+                <span class="q-knowledge">🏃 相遇问题</span>
+            </div>
+            <div class="q-title">甲、乙相向而行，甲每分钟 75 米，乙每分钟 65 米，18 分钟相遇。相遇后甲又走 13 分钟到乙的出发地。两地相距多少米？</div>
+            <div class="answer-area">
+                <div class="answer-label">过程：</div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+            </div>
+            <div class="tip">提示：相遇后甲走的 13 分钟 = 相遇前乙走的 18 分钟</div>
+        </div>
+        
+        <!-- 第 6 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">6</span>
+                <span class="q-knowledge">🏃 追及问题</span>
+            </div>
+            <div class="q-title">小红先走 25 分钟（每分钟 60 米），小明 5 分钟追上。小明每分钟至少走多少米？</div>
+            <div class="answer-area">
+                <div class="answer-label">过程：</div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+            </div>
+            <div class="tip">提示：追及距离 = 先走距离 + 追赶时又走的距离</div>
+        </div>
+    </div>
+    
+    <!-- 第 2 页：几何 + 综合 -->
+    <div class="page">
+        <!-- 第 7 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">7</span>
+                <span class="q-knowledge">📐 几何作图</span>
+            </div>
+            <div class="q-title">在方格纸上画图。（每格 1 厘米）</div>
+            <div style="margin: 6px 0; font-size: 12px;">
+                <p>（1）画一个高 3 厘米的等腰梯形</p>
+                <p style="margin-top: 5px;">（2）画一个底 6 厘米、高 4 厘米的平行四边形</p>
+            </div>
+            <div class="grid-box"></div>
+            <div class="tip">提示：等腰梯形两腰相等；平行四边形的高是垂直距离</div>
+        </div>
+        
+        <!-- 第 8 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">8</span>
+                <span class="q-knowledge">📐 组合图形面积</span>
+            </div>
+            <div class="q-title">长 12 米、宽 9 米的长方形菜园一面靠墙，周围修 1 米宽的小路（靠墙侧不修）。小路面积是多少平方米？</div>
+            <div class="answer-area">
+                <div class="answer-label">过程：</div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+            </div>
+            <div class="tip">提示：大长方形面积 - 菜园面积 = 小路面积</div>
+        </div>
+        
+        <!-- 第 9 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">9</span>
+                <span class="q-knowledge">📐 三角形内角和</span>
+            </div>
+            <div class="q-title">三角形中两个内角相等，第三个内角比这两个角的和大 30°。三个内角分别是多少度？</div>
+            <div class="answer-area">
+                <div class="answer-label">过程：</div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+            </div>
+            <div class="tip">提示：设相等的角为 x°，第三个角是 (2x+30)°，内角和 180°</div>
+        </div>
+        
+        <!-- 第 10 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">10</span>
+                <span class="q-knowledge">🏃 相遇问题</span>
+            </div>
+            <div class="q-title">A、B 两车从相距 480 千米的两地同时出发相向而行。A 车每小时 55 千米，B 车每小时 45 千米。几小时相遇？相遇时 A 车比 B 车多行多少千米？</div>
+            <div class="answer-area">
+                <div class="answer-label">过程：</div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+            </div>
+            <div class="tip">提示：相遇时间 = 总路程÷速度和；多行距离 = 速度差×时间</div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>🌟 做完啦！仔细检查，交给老师批改！</strong></p>
+            <p style="margin-top: 6px; font-size: 11px;">康晨熹专属练习 · 针对性错题巩固</p>
+        </div>
+    </div>
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$$', '$$'], ['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+        
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js';
+        script.async = true;
+        document.head.appendChild(script);
+    </script>
+</body>
+</html>
