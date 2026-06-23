@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>康晨熹专属错题巩固练习 - A4 打印版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'KaiTi', '楷体', Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        
+        .print-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .print-button::before {
+            content: "🖨️ ";
+        }
+        
+        .page {
+            background: white;
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto 20px;
+            padding: 20mm;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #333;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #2c5aa0;
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        
+        .info {
+            display: flex;
+            justify-content: space-between;
+            background: #f0f7ff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .encouragement {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .question {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            page-break-inside: avoid;
+        }
+        
+        .question:hover {
+            border-color: #2c5aa0;
+        }
+        
+        .q-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .q-number {
+            display: inline-block;
+            background: #2c5aa0;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .q-knowledge {
+            display: inline-block;
+            background: #fff3cd;
+            color: #856404;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-left: 10px;
+        }
+        
+        .q-title {
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        
+        .math-display {
+            text-align: center;
+            font-size: 18px;
+            margin: 12px 0;
+            padding: 10px;
+            background: #fafafa;
+            border-radius: 5px;
+        }
+        
+        .answer-area {
+            border: 2px dashed #ccc;
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 12px;
+            min-height: 70px;
+            background: #fafafa;
+        }
+        
+        .answer-label {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .blank-line {
+            border-bottom: 1px dotted #999;
+            height: 25px;
+            margin: 8px 0;
+        }
+        
+        .tip {
+            background: #e7f3ff;
+            border-left: 3px solid #2c5aa0;
+            padding: 8px 12px;
+            margin-top: 12px;
+            font-size: 13px;
+            color: #1a5490;
+            font-style: italic;
+        }
+        
+        .tip::before {
+            content: "💡 ";
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        
+        table td {
+            border: 2px solid #2c5aa0;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .grid-box {
+            border: 2px solid #333;
+            width: 100%;
+            height: 150px;
+            margin: 10px 0;
+            background-image: 
+                linear-gradient(#e0e0e0 1px, transparent 1px),
+                linear-gradient(90deg, #e0e0e0 1px, transparent 1px);
+            background-size: 15px 15px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 2px solid #e0e0e0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .score-box {
+            position: absolute;
+            top: 20mm;
+            right: 20mm;
+            border: 3px solid #2c5aa0;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .score-label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .score-value {
+            font-size: 24px;
+            color: #2c5aa0;
+            font-weight: bold;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .print-button {
+                display: none;
+            }
+            
+            .page {
+                box-shadow: none;
+                margin: 0;
+                padding: 15mm;
+                width: 210mm;
+                min-height: 297mm;
+            }
+            
+            .question {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="print-button" onclick="window.print()">一键打印</button>
+    
+    <!-- 第 1 页 -->
+    <div class="page">
+        <div class="score-box">
+            <div class="score-label">得分</div>
+            <div class="score-value">____ / 100</div>
+        </div>
+        
+        <div class="header">
+            <h1>🎯 错题巩固练习卷</h1>
+        </div>
+        
+        <div class="info">
+            <span><strong>学生：</strong>康晨熹</span>
+            <span><strong>日期：</strong>2026 年 6 月 23 日</span>
+            <span><strong>限时：</strong>60 分钟</span>
+        </div>
+        
+        <div class="encouragement">
+            💪 加油！认真做完这些题，你会发现自己进步了很多！
+        </div>
+        
+        <!-- 第 1 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">1</span>
+                <span class="q-knowledge">📐 乘法分配律</span>
+            </div>
+            <div class="q-title">用简便方法计算：</div>
+            <div class="math-display">
+                $$56 × 34 + 56 + 56 × 65 = $$
+            </div>
+            <div class="answer-area">
+                <div class="answer-label">解题过程：</div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+            </div>
+            <div class="tip">小提示：把单独的 56 看成 56×1，然后提取公因数 56，看看能不能凑整？</div>
+        </div>
+        
+        <!-- 第 2 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">2</span>
+                <span class="q-knowledge">📐 乘法分配律</span>
+            </div>
+            <div class="q-title">用简便方法计算：</div>
+            <div class="math-display">
+                $$125 × 73 - 125 × 5 - 125 × 8 = $$
+            </div>
+            <div class="answer-area">
+                <div class="answer-label">解题过程：</div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+            </div>
+            <div class="tip">小提示：提取公因数 125，括号里是 73 - 5 - 8，等于多少呢？</div>
+        </div>
+        
+        <!-- 第 3 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">3</span>
+                <span class="q-knowledge">🧮 最值问题</span>
+            </div>
+            <div class="q-title">用 1、3、5、7、9 这五个数字组成一个三位数和一个两位数（每个数字只能用一次）。</div>
+            <div style="margin: 10px 0;">
+                <p>（1）要使积<strong>最小</strong>，列式：________________________</p>
+                <p style="margin-top: 8px;">（2）要使积<strong>最大</strong>，列式：________________________</p>
+            </div>
+            <div class="answer-area">
+                <div class="answer-label">思考过程：</div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+            </div>
+            <div class="tip">小提示：积最小→小数放高位；积最大→大数放高位。两位数的十位和三位数的百位最关键！</div>
+        </div>
+    </div>
+    
+    <!-- 第 2 页 -->
+    <div class="page">
+        <!-- 第 4 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">4</span>
+                <span class="q-knowledge">💰 最优方案</span>
+            </div>
+            <div class="q-title">阳光小学组织 15 名老师和 32 名学生去参观科技馆。购票方案如下：</div>
+            <table>
+                <tr>
+                    <td style="background: #f0f7ff;"><strong>方案一</strong><br>成人票：50 元/人<br>学生票：25 元/人</td>
+                    <td><strong>方案二</strong><br>团体票：30 元/人<br>（40 人及以上）</td>
+                </tr>
+            </table>
+            <div style="margin-top: 10px;">怎样购买最划算？最少需要多少元？</div>
+            <div class="answer-area">
+                <div class="answer-label">解题过程：</div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+            </div>
+            <div class="tip">小提示：学生票 25 元 < 团体票 30 元，但成人票 50 元 > 团体票 30 元。可以混合购买吗？需要凑够多少人才能买团体票？</div>
+        </div>
+        
+        <!-- 第 5 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">5</span>
+                <span class="q-knowledge">🏃 相遇问题</span>
+            </div>
+            <div class="q-title">甲、乙两人从相距一定距离的两地同时出发，相向而行。甲每分钟走 75 米，乙每分钟走 65 米，经过 18 分钟相遇。相遇后，甲继续走了 13 分钟到达乙的出发地。两地相距多少米？</div>
+            <div class="answer-area">
+                <div class="answer-label">解题过程：</div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+            </div>
+            <div class="tip">小提示：相遇后甲走的 13 分钟路程，正好等于相遇前乙走的 18 分钟路程。先求甲的速度，再求全程。</div>
+        </div>
+        
+        <!-- 第 6 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">6</span>
+                <span class="q-knowledge">🏃 追及问题</span>
+            </div>
+            <div class="q-title">小明和小红在一条直路上，小红先出发 25 分钟，每分钟走 60 米。小明出发后 5 分钟追上了小红。小明每分钟至少走多少米？</div>
+            <div class="answer-area">
+                <div class="answer-label">解题过程：</div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+            </div>
+            <div class="tip">小提示：小明要追上的距离 = 小红先走的距离 + 追赶时小红又走的距离。</div>
+        </div>
+    </div>
+    
+    <!-- 第 3 页 -->
+    <div class="page">
+        <!-- 第 7 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">7</span>
+                <span class="q-knowledge">📐 几何作图</span>
+            </div>
+            <div class="q-title">在方格纸上画图。（每个小方格边长 1 厘米）</div>
+            <div style="margin: 10px 0;">
+                <p>（1）画一个高是 3 厘米的等腰梯形</p>
+                <p style="margin-top: 8px;">（2）画一个底是 6 厘米、高是 4 厘米的平行四边形</p>
+            </div>
+            <div class="grid-box"></div>
+            <div class="tip">小提示：等腰梯形两腰相等，对称；平行四边形的高是垂直距离，不是斜边！</div>
+        </div>
+        
+        <!-- 第 8 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">8</span>
+                <span class="q-knowledge">📐 组合图形面积</span>
+            </div>
+            <div class="q-title">李奶奶家有一个长 12 米、宽 9 米的长方形菜园，一面靠墙。现在要在菜园周围修一条 1 米宽的小路（靠墙一侧不修），小路的面积是多少平方米？</div>
+            <div class="answer-area">
+                <div class="answer-label">解题过程：</div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+            </div>
+            <div class="tip">小提示：大长方形面积 - 菜园面积 = 小路面积。注意靠墙一侧没有小路！</div>
+        </div>
+        
+        <!-- 第 9 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">9</span>
+                <span class="q-knowledge">📐 三角形内角和</span>
+            </div>
+            <div class="q-title">在一个三角形中，有两个内角相等，第三个内角比这两个内角的和大 30°。这个三角形的三个内角分别是多少度？</div>
+            <div class="answer-area">
+                <div class="answer-label">解题过程：</div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+            </div>
+            <div class="tip">小提示：设相等的两个角为 x°，第三个角就是 (2x + 30)°，三角形内角和是 180°。</div>
+        </div>
+        
+        <!-- 第 10 题 -->
+        <div class="question">
+            <div class="q-header">
+                <span class="q-number">10</span>
+                <span class="q-knowledge">🏃 相遇问题</span>
+            </div>
+            <div class="q-title">A、B 两车从相距 480 千米的两地同时出发，相向而行。A 车每小时行 55 千米，B 车每小时行 45 千米。几小时后两车相遇？相遇时 A 车比 B 车多行多少千米？</div>
+            <div class="answer-area">
+                <div class="answer-label">解题过程：</div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+            </div>
+            <div class="tip">小提示：相遇时间 = 总路程 ÷ 速度和；多行的距离 = 速度差 × 时间。</div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>🌟 做完啦！仔细检查一遍，然后交给老师批改哦！</strong></p>
+            <p style="margin-top: 8px; font-size: 12px;">康晨熹专属练习 · 针对性错题巩固</p>
+        </div>
+    </div>
+    
+    <script>
+        // 自动检测 MathJax 并加载
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$$', '$$'], ['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+        
+        // 动态加载 MathJax
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js';
+        script.async = true;
+        document.head.appendChild(script);
+    </script>
+</body>
+</html>
