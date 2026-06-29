@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4年级计算题专项 - Claw AI数学老师</title>
+  <!-- KaTeX 数学公式渲染 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; max-width: 1000px; margin: 0 auto; padding: 10px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); min-height: 100vh; }
+    
+    /* 移动端响应式适配 - 全面优化 */
+    @media (max-width: 768px) {
+      body { padding: 8px; }
+      .card { padding: 15px; margin: 10px 0; border-radius: 12px; }
+      .card h2 { font-size: 1.1rem; margin-bottom: 15px; }
+      .question-item { padding: 12px; margin-bottom: 10px; }
+      .question-text { font-size: 15px; }
+      .question-answer input { width: 120px; font-size: 16px; padding: 8px; }
+      .controls { padding: 10px; gap: 8px; }
+      .btn { padding: 10px 16px; font-size: 14px; }
+      .header h1 { font-size: 1.5rem; }
+      .info-bar { flex-direction: column; gap: 5px; text-align: center; font-size: 13px; }
+      .score-number { font-size: 3rem; }
+      
+      /* 手机端图形改成垂直布局，避免错位 */
+      .question-graphic-container {
+        flex-direction: column !important;
+      }
+      .question-graphic-container svg {
+        max-width: 100% !important;
+        height: auto !important;
+        max-height: 150px !important;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .question-answer input { width: 100px; }
+      .btn { padding: 8px 12px; font-size: 13px; }
+      .controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      /* 更小屏幕图形优化 */
+      .question-graphic-container > div:last-child {
+        align-self: center;
+      }
+    }
+    
+    @media print {
+      body { background: white; padding: 10px; }
+      .no-print { display: none !important; }
+      .card { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
+      input, textarea { border: none; border-bottom: 1px solid #333; background: transparent; }
+    }
+
+    .header { text-align: center; color: white; padding: 20px 0; }
+    .header h1 { font-size: 2rem; margin-bottom: 10px; }
+    .header p { opacity: 0.9; }
+
+    .controls { background: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .btn { padding: 12px 24px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+    .btn-print { background: #4CAF50; color: white; }
+    .btn-check { background: #2E7D32; color: white; }
+    .btn-reset { background: #ff9800; color: white; }
+    .btn-hint { background: #9C27B0; color: white; }
+
+    .card { background: white; padding: 25px; margin: 20px 0; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
+    .card h2 { color: #2E7D32; margin-bottom: 20px; font-size: 1.4rem; border-bottom: 3px solid #e8f5e9; padding-bottom: 10px; }
+
+    .question-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    .question-item { padding: 20px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #2E7D32; margin-bottom: 15px; transition: all 0.3s; }
+    .question-item.correct { background: #e8f5e9; border-left-color: #4CAF50; }
+    .question-item.wrong { background: #ffebee; border-left-color: #f44336; }
+    .question-text { font-size: 17px; font-weight: 500; color: #333; margin-bottom: 15px; line-height: 1.6; }
+    .question-answer textarea { width: 100%; padding: 12px; font-size: 16px; border: 2px solid #ddd; border-radius: 8px; min-height: 80px; resize: vertical; font-family: inherit; }
+    .question-answer input { width: 150px; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 6px; text-align: center; }
+    .answer-row { display: flex; align-items: center; gap: 15px; }
+    .answer-label { font-weight: 600; color: #666; }
+    .result-icon { font-size: 24px; }
+    .correct-answer { font-size: 15px; color: #4CAF50; font-weight: 600; margin-top: 10px; }
+
+    .score-card { text-align: center; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; padding: 30px; border-radius: 16px; margin: 20px 0; display: none; }
+    .score-card.show { display: block; }
+    .score-number { font-size: 4rem; font-weight: bold; }
+
+    .info-bar { background: #fff3cd; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+    .info-bar span { color: #856404; font-weight: 600; }
+    
+    /* KaTeX 公式样式 */
+    .katex { font-size: 1.1em; }
+    .math-formula { font-family: 'Times New Roman', serif; }
+  </style>
+</head>
+<body>
+  <div class="header no-print">
+    <h1>🧮 Claw AI数学老师</h1>
+    <p>4年级计算题专项 · 共 15 道题</p>
+  </div>
+
+  <div class="controls no-print">
+    <button class="btn btn-print" onclick="smartPrint()">🖨️ 打印练习</button>
+    <button class="btn btn-check" onclick="checkAll()">✅ 自动批改</button>
+    <button class="btn btn-reset" onclick="resetAll()">🔄 重置答案</button>
+    <button class="btn btn-hint" onclick="showHints()">💡 显示提示</button>
+  </div>
+
+  <div class="info-bar no-print">
+    <span>📅 生成时间：2026/6/29</span>
+    <span>👤 4年级 · 计算题专项</span>
+  </div>
+
+  <div class="card">
+    <h2>📝 练习题</h2>
+    <div class="question-grid">
+      
+    <div class="question-item" id="q-1" data-answer="49">
+      <div class="question-text"><strong>1.</strong> 24 + 3 - 22 =</div>
+      <div class="question-answer" style="margin-top: 10px;">
+        <input type="text" id="input-1" placeholder="答案">
+        <span class="result-icon" id="icon-1"></span>
+      </div>
+      <div class="correct-answer" id="correct-1" style="display:none;">
+        正确答案：49
+      </div>
+    </div>
+    
+    <div class="question-item" id="q-2" data-answer="1443">
+      <div class="question-text"><strong>2.</strong> 32 + 83 × 17 =</div>
+      <div class="question-answer" style="margin-top: 10px;">
+        <input type="text" id="input-2" placeholder="答案">
+        <span class="result-icon" id="icon-2"></span>
+      </div>
+      <div class="correct-answer" id="correct-2" style="display:none;">
+        正确答案：1443
+      </div>
+    </div>
+    
+    <div class="question-item" id="q-3" data-answer="4168">
+      <div class="question-text"><strong>3.</strong> 60 × 69 + 28 =</div>
+      <div class="question-answer" style="margin-top: 10px;">
+        <input type="text" id="input-3" placeholder="答案">
+        <span class="result-icon" id="icon-3"></span>
+      </div>
+      <div class="correct-answer" id="correct-3" style="display:none;">
+        正确答案：4168
+      </div>
+    </div>
+    
+    <div class="question-item" id="q-4" data-answer="122">
+      <div class="question-text"><strong>4.</strong> 26 + 58 + 38 =</div>
+      <div class="question-answer" style="margin-top: 10px;">
+        <input type="text" id="input-4" placeholder="答案">
+        <span class="result-icon" id="icon-4"></span>
+      </div>
+      <div class="correct-answer" id="correct-4" style="display:none;">
+        正确答案：122
+      </div>
+    </div>
+    
+    <div class="question-item" id="q-5" data-answer="1743">
+      <div class="question-text"><strong>5.</strong> 48 × 36 - 15 =</div>
+      <div class="question-answer" style="margin-top: 10px;">
+        <input type="text" id="input-5" placeholder="答案">
+        <span class="result-icon" id="icon-5"></span>
+      </div>
+      <div class="correct-answer" id="correct-5" style="display:none;">
+        正确答案：1743
+      </div>
+    </div>
+    
+    <div class="question-item" id="q-6" data-answer="72">
+      <div class="question-text"><strong>6.</strong> 67 - 1 + 4 =</div>
+      <div class="question-answer" style="margin-top: 10px;">
+        <input type="text" id="input-6" placeholder="答案">
+        <span class="result-icon" id="icon-6"></span>
+      </div>
+      <div class="correct-answer" id="correct-6" style="display:none;">
+        正确答案：72
+      </div>
+    </div>
+    
+    <div class="question-item" id="q-7" data-answer="164">
+      <div class="question-text"><strong>7.</strong> 14 - 30 × 5 =</div>
+      <div class="question-answer" style="margin-top: 10px;">
+        <input type="text" id="input-7" placeholder="答案">
+        <span class="result-icon" id="icon-7"></span>
+      </div>
+      <div class="correct-answer" id="correct-7" style="display:none;">
+        正确答案：164
+      </div>
+    </div>
+    
+    <div class="question-item" id="q-8" data-answer="2329">
+      <div class="question-text"><strong>8.</strong> 100 × 23 × 29 =</div>
+      <div class="question-answer" style="margin-top: 10px;">
+        <input type="text" id="input-8" placeholder="答案">
+        <span class="result-icon" id="icon-8"></span>
+      </div>
+      <div class="correct-answer" id="correct-8" style="display:none;">
+        正确答案：2329
+      </div>
+    </div>
+    
+    <div class="question-item" id="q-9" data-answer="102">
+      <div class="question-text"><strong>9.</strong> 34 - 41 + 27 =</div>
+      <div class="question-answer" style="margin-top: 10px;">
+        <input type="text" id="input-9" placeholder="答案">
+        <span class="result-icon" id="icon-9"></span>
+      </div>
+      <div class="correct-answer" id="correct-9" style="display:none;">
+        正确答案：102
+      </div>
+    </div>
+    
+    <div class="question-item" id="q-10" data-answer="1195">
+      <div class="question-text"><strong>10.</strong> 70 × 17 + 5 =</div>
+      <div class="question-answer" style="margin-top: 10px;">
+        <input type="text" id="input-10" placeholder="答案">
+        <span class="result-icon" id="icon-10"></span>
+      </div>
+      <div class="correct-answer" id="correct-10" style="display:none;">
+        正确答案：1195
+      </div>
+    </div>
+    
+    <div class="question-item" id="q-11" data-answer="165">
+      <div class="question-text"><strong>11.</strong> 76 - 39 + 50 =</div>
+      <div class="question-answer" style="margin-top: 10px;">
+        <input type="text" id="input-11" placeholder="答案">
+        <span class="result-icon" id="icon-11"></span>
+      </div>
+      <div class="correct-answer" id="correct-11" style="display:none;">
+        正确答案：165
+      </div>
+    </div>
+    
+    <div class="question-item" id="q-12" data-answer="324">
+      <div class="question-text"><strong>12.</strong> 48 - 12 × 23 =</div>
+      <div class="question-answer" style="margin-top: 10px;">
+        <input type="text" id="input-12" placeholder="答案">
+        <span class="result-icon" id="icon-12"></span>
+      </div>
+      <div class="correct-answer" id="correct-12" style="display:none;">
+        正确答案：324
+      </div>
+    </div>
+    
+    <div class="question-item" id="q-13" data-answer="177">
+      <div class="question-text"><strong>13.</strong> 82 + 83 - 12 =</div>
+      <div class="question-answer" style="margin-top: 10px;">
+        <input type="text" id="input-13" placeholder="答案">
+        <span class="result-icon" id="icon-13"></span>
+      </div>
+      <div class="correct-answer" id="correct-13" style="display:none;">
+        正确答案：177
+      </div>
+    </div>
+    
+    <div class="question-item" id="q-14" data-answer="91">
+      <div class="question-text"><strong>14.</strong> 42 + 42 + 7 =</div>
+      <div class="question-answer" style="margin-top: 10px;">
+        <input type="text" id="input-14" placeholder="答案">
+        <span class="result-icon" id="icon-14"></span>
+      </div>
+      <div class="correct-answer" id="correct-14" style="display:none;">
+        正确答案：91
+      </div>
+    </div>
+    
+    <div class="question-item" id="q-15" data-answer="131">
+      <div class="question-text"><strong>15.</strong> 41 + 45 × 2 =</div>
+      <div class="question-answer" style="margin-top: 10px;">
+        <input type="text" id="input-15" placeholder="答案">
+        <span class="result-icon" id="icon-15"></span>
+      </div>
+      <div class="correct-answer" id="correct-15" style="display:none;">
+        正确答案：131
+      </div>
+    </div>
+    
+    </div>
+  </div>
+
+  <div class="score-card no-print" id="scoreCard">
+    <div class="score-number" id="scoreNumber">0</div>
+    <div class="score-text">得分 · 共 15 题</div>
+    <div style="margin-top: 15px; font-size: 18px;" id="scoreMessage"></div>
+  </div>
+
+  <script>
+    const totalQuestions = 15;
+
+    // 检查单道题
+    function checkSingle(qid, answer) {
+      const input = document.getElementById('input-' + qid);
+      const item = document.getElementById('q-' + qid);
+      const icon = document.getElementById('icon-' + qid);
+      const correctAns = document.getElementById('correct-' + qid);
+      const userAns = input.value.trim();
+      
+      if (userAns === '') {
+        item.className = 'question-item';
+        icon.textContent = '';
+        correctAns.style.display = 'none';
+        return 0;
+      }
+      
+      const correctAnswer = answer;
+      const userNum = parseFloat(userAns);
+      
+      if (!isNaN(userNum) && Math.abs(userNum - correctAnswer) < 0.1) {
+        item.className = 'question-item correct';
+        icon.textContent = '✅';
+        correctAns.style.display = 'none';
+        return 1;
+      } else {
+        item.className = 'question-item wrong';
+        icon.textContent = '❌';
+        correctAns.style.display = 'block';
+        return 0;
+      }
+    }
+
+    // 批改全部
+    function checkAll() {
+      let correct = 0;
+      correct += checkSingle(1, 49);
+      correct += checkSingle(2, 1443);
+      correct += checkSingle(3, 4168);
+      correct += checkSingle(4, 122);
+      correct += checkSingle(5, 1743);
+      correct += checkSingle(6, 72);
+      correct += checkSingle(7, 164);
+      correct += checkSingle(8, 2329);
+      correct += checkSingle(9, 102);
+      correct += checkSingle(10, 1195);
+      correct += checkSingle(11, 165);
+      correct += checkSingle(12, 324);
+      correct += checkSingle(13, 177);
+      correct += checkSingle(14, 91);
+      correct += checkSingle(15, 131);
+
+      const scoreCard = document.getElementById('scoreCard');
+      const scoreNumber = document.getElementById('scoreNumber');
+      const scoreMessage = document.getElementById('scoreMessage');
+      
+      const percentage = Math.round((correct / totalQuestions) * 100);
+      scoreNumber.textContent = percentage + '%';
+      scoreCard.className = 'score-card no-print show';
+      
+      if (percentage >= 90) {
+        scoreMessage.textContent = '🌟 太棒了！你是数学小天才！';
+      } else if (percentage >= 70) {
+        scoreMessage.textContent = '👍 不错！继续加油！';
+      } else if (percentage >= 60) {
+        scoreMessage.textContent = '💪 及格了，还要努力哦！';
+      } else {
+        scoreMessage.textContent = '📚 没关系，多练习就会进步的！';
+      }
+      
+      scoreCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // 重置全部
+    function resetAll() {
+      const textareas = document.querySelectorAll('textarea');
+      textareas.forEach(ta => ta.value = '');
+      
+      
+    document.getElementById('input-1').value = '';
+    document.getElementById('q-1').className = 'question-item';
+    document.getElementById('icon-1').textContent = '';
+    document.getElementById('correct-1').style.display = 'none';
+    
+    document.getElementById('input-2').value = '';
+    document.getElementById('q-2').className = 'question-item';
+    document.getElementById('icon-2').textContent = '';
+    document.getElementById('correct-2').style.display = 'none';
+    
+    document.getElementById('input-3').value = '';
+    document.getElementById('q-3').className = 'question-item';
+    document.getElementById('icon-3').textContent = '';
+    document.getElementById('correct-3').style.display = 'none';
+    
+    document.getElementById('input-4').value = '';
+    document.getElementById('q-4').className = 'question-item';
+    document.getElementById('icon-4').textContent = '';
+    document.getElementById('correct-4').style.display = 'none';
+    
+    document.getElementById('input-5').value = '';
+    document.getElementById('q-5').className = 'question-item';
+    document.getElementById('icon-5').textContent = '';
+    document.getElementById('correct-5').style.display = 'none';
+    
+    document.getElementById('input-6').value = '';
+    document.getElementById('q-6').className = 'question-item';
+    document.getElementById('icon-6').textContent = '';
+    document.getElementById('correct-6').style.display = 'none';
+    
+    document.getElementById('input-7').value = '';
+    document.getElementById('q-7').className = 'question-item';
+    document.getElementById('icon-7').textContent = '';
+    document.getElementById('correct-7').style.display = 'none';
+    
+    document.getElementById('input-8').value = '';
+    document.getElementById('q-8').className = 'question-item';
+    document.getElementById('icon-8').textContent = '';
+    document.getElementById('correct-8').style.display = 'none';
+    
+    document.getElementById('input-9').value = '';
+    document.getElementById('q-9').className = 'question-item';
+    document.getElementById('icon-9').textContent = '';
+    document.getElementById('correct-9').style.display = 'none';
+    
+    document.getElementById('input-10').value = '';
+    document.getElementById('q-10').className = 'question-item';
+    document.getElementById('icon-10').textContent = '';
+    document.getElementById('correct-10').style.display = 'none';
+    
+    document.getElementById('input-11').value = '';
+    document.getElementById('q-11').className = 'question-item';
+    document.getElementById('icon-11').textContent = '';
+    document.getElementById('correct-11').style.display = 'none';
+    
+    document.getElementById('input-12').value = '';
+    document.getElementById('q-12').className = 'question-item';
+    document.getElementById('icon-12').textContent = '';
+    document.getElementById('correct-12').style.display = 'none';
+    
+    document.getElementById('input-13').value = '';
+    document.getElementById('q-13').className = 'question-item';
+    document.getElementById('icon-13').textContent = '';
+    document.getElementById('correct-13').style.display = 'none';
+    
+    document.getElementById('input-14').value = '';
+    document.getElementById('q-14').className = 'question-item';
+    document.getElementById('icon-14').textContent = '';
+    document.getElementById('correct-14').style.display = 'none';
+    
+    document.getElementById('input-15').value = '';
+    document.getElementById('q-15').className = 'question-item';
+    document.getElementById('icon-15').textContent = '';
+    document.getElementById('correct-15').style.display = 'none';
+    
+      
+      document.getElementById('scoreCard').className = 'score-card no-print';
+    }
+    
+    // 显示提示
+    function showHints() {
+      const hints = document.querySelectorAll('.correct-answer');
+      hints.forEach(h => h.style.display = h.style.display === 'none' ? 'block' : 'none');
+    }
+    
+    // 智能打印 - 检测飞书/微信内置浏览器
+    function smartPrint() {
+      var ua = navigator.userAgent.toLowerCase();
+      var isFeishu = ua.indexOf('feishu') > -1 || ua.indexOf('lark') > -1;
+      var isWechat = ua.indexOf('micromessenger') > -1;
+      
+      if (isFeishu || isWechat) {
+        var tip = document.createElement('div');
+        tip.style.cssText = 'position:fixed;top:20%;left:50%;transform:translateX(-50%);background:white;padding:20px;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.3);z-index:9999;max-width:90%;text-align:center;';
+        var html = '';
+        html += '<h3 style="color:#E65100;margin:0 0 15px 0;">📢 打印提示</h3>';
+        html += '<p style="margin:10px 0;color:#333;font-size:15px;">检测到您在飞书/微信中打开</p>';
+        html += '<p style="margin:10px 0;color:#666;font-size:14px;">内置浏览器不支持直接打印，请：</p>';
+        html += '<ol style="text-align:left;color:#333;padding-left:20px;margin:15px 0;font-size:14px;">';
+        html += '<li style="margin:8px 0;">点击右上角 <strong>「...」</strong> 按钮</li>';
+        html += '<li style="margin:8px 0;">选择 <strong>「在浏览器打开」</strong></li>';
+        html += '<li style="margin:8px 0;">在系统浏览器中点击打印按钮</li>';
+        html += '</ol>';
+        html += '<button onclick="this.parentElement.remove()" style="margin-top:15px;padding:10px 24px;background:#1976D2;color:white;border:none;border-radius:8px;font-size:16px;cursor:pointer;">知道了</button>';
+        tip.innerHTML = html;
+        document.body.appendChild(tip);
+      } else {
+        window.print();
+      }
+    }
+
+    // 回车跳到下一题
+    document.querySelectorAll('input').forEach((input, index, inputs) => {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          if (index < inputs.length - 1) {
+            inputs[index + 1].focus();
+          } else {
+            checkAll();
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

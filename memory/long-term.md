@@ -5,8 +5,8 @@
 - Display name: Alice (康晨熹)
 - Education system: 中国大陆小学
 - School entry year: 2025
-- Current grade baseline on 2026-05-21: 一年级下学期
-- Textbook: 人教版数学一年级下册
+- Current grade baseline on 2026-05-21: 四年级下学期
+- Textbook: 人教版数学四年级下册
 - Semester rule:
   - September 1 to January 31: first semester.
   - February 1 to August 31: second semester.
